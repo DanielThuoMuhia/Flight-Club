@@ -1,27 +1,27 @@
-# Flight Deal Finder
+# Flight Club
 
-## 📖 Overview
-The **Flight Deal Finder** is a Python application designed to monitor flight prices from a specified origin to various destinations. It sends notifications via WhatsApp whenever there are low-priced flights or when flight data is unavailable. This project integrates with Google Sheets to manage destination data effectively.
+## Overview
 
-## 🚀 Features
-- **Automatic IATA Code Retrieval:** Automatically updates IATA codes for destinations missing this information.
-- **Flight Search:** Checks for flights within a specified date range and identifies the cheapest options.
-- **Notifications:** Sends alerts via WhatsApp for:
-  - **Low Price Alerts:** When a flight is found below the expected price.
-  - **Data Availability Alerts:** Notifications when no flight data is available or when no valid flights are found.
+Flight Club is a Python-based application that helps users find the cheapest flight deals. It integrates with the Amadeus API to search for both direct and indirect flights, notifying users when prices drop below their specified thresholds.
 
-## 🛠️ Technologies Used
-- **Python 3.x**
-- **Google Sheets API:** For managing destination data.
-- **Flight Search API:** To fetch flight information.
-- **WhatsApp API:** For sending notifications.
-- **Datetime:** For handling date and time functionalities.
+## Features
 
-## 📥 Getting Started
+- **Flight Search**: Find the cheapest direct or indirect flights between specified origin and destination airports.
+- **Email Notifications**: Receive alerts via email when flight prices drop.
+- **WhatsApp Notifications**: Get instant WhatsApp notifications for low-price alerts.
+- **User Management**: Store and manage user information using Google Sheets.
 
-### Prerequisites
-Before running the application, ensure you have:
-- **Python 3.x** installed on your machine.
-- Required libraries. Install them using:
-  ```bash
-  pip install requests
+## Technologies Used
+
+- Python
+- Amadeus API
+- Google Sheets API
+- Twilio API (for WhatsApp notifications)
+- SMTP (for email notifications)
+
+## Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/DanielThuoMuhia/Flight-Club.git
+   cd Flight-Club
