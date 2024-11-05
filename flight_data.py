@@ -1,7 +1,7 @@
 # Define a class to store flight information and find the cheapest flight from data
 class FlightData:
 
-    def __init__(self, price, origin_airport, destination_airport, out_date, return_date):
+    def __init__(self, price, origin_airport, destination_airport, out_date, return_date, stops):
         """
         Initialize the FlightData object with details of a flight.
         
@@ -11,13 +11,14 @@ class FlightData:
             destination_airport (str): IATA code of the destination airport.
             out_date (str): Departure date in 'YYYY-MM-DD' format.
             return_date (str): Return date in 'YYYY-MM-DD' format.
+            stops (int): Number of stops (0 for direct, 1 or more for indirect flights).
         """
-        
         self.price = price
         self.origin_airport = origin_airport
         self.destination_airport = destination_airport
         self.out_date = out_date
         self.return_date = return_date
+        self.stops = stops
 
     @staticmethod
     def find_cheapest_flight(data):
@@ -30,41 +31,30 @@ class FlightData:
         Returns:
             FlightData: An instance of FlightData with the details of the cheapest flight.
         """
-        
         # Handle case when data is None or contains no flight information
-        if data is None or not data['data']:
-            print("No flight data")
-            return FlightData("N/A", "N/A", "N/A", "N/A", "N/A")
+        if data is None or not data.get('data'):
+            print("No flight data available.")
+            return FlightData("N/A", "N/A", "N/A", "N/A", "N/A", "N/A")
 
-        # Extract details from the first flight as a starting point
+        # Initialize with the first flight data for comparison
         first_flight = data['data'][0]
-        lowest_price = float(first_flight["price"]["grandTotal"])  # Initial lowest price
+        lowest_price = float(first_flight["price"]["grandTotal"])
         origin = first_flight["itineraries"][0]["segments"][0]["departure"]["iataCode"]
-        destination = first_flight["itineraries"][0]["segments"][0]["arrival"]["iataCode"]
+        destination = first_flight["itineraries"][0]["segments"][-1]["arrival"]["iataCode"]
         out_date = first_flight["itineraries"][0]["segments"][0]["departure"]["at"].split("T")[0]
         return_date = first_flight["itineraries"][1]["segments"][0]["departure"]["at"].split("T")[0]
+        nr_stops = len(first_flight["itineraries"][0]["segments"]) - 1
 
-        # Create a FlightData instance with the initial flight details for comparison
-        cheapest_flight = FlightData(lowest_price, origin, destination, out_date, return_date)
+        # Create an initial FlightData object for the first flight
+        cheapest_flight = FlightData(lowest_price, origin, destination, out_date, return_date, nr_stops)
 
-        # Iterate through each flight in the data to find the cheapest option
+        # Loop through each flight to find the cheapest one
         for flight in data["data"]:
-            price = float(flight["price"]["grandTotal"])  # Convert price to float for comparison
-            
-            # Update if the current flight has a lower price than the previous cheapest
+            price = float(flight["price"]["grandTotal"])
             if price < lowest_price:
                 lowest_price = price
                 origin = flight["itineraries"][0]["segments"][0]["departure"]["iataCode"]
-                destination = flight["itineraries"][0]["segments"][0]["arrival"]["iataCode"]
-                out_date = flight["itineraries"][0]["segments"][0]["departure"]["at"].split("T")[0]
-                return_date = flight["itineraries"][1]["segments"][0]["departure"]["at"].split("T")[0]
-                cheapest_flight = FlightData(lowest_price, origin, destination, out_date, return_date)
-                
-                # Print the current lowest price and destination for reference
-                print(f"Lowest price to {destination} is £{lowest_price}")
-
-        # Return the FlightData instance with the cheapest flight details
-        return cheapest_flight
+                destination
 
     
 
